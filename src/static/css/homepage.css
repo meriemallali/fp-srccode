@@ -1,0 +1,129 @@
+i{
+    color: #5457a1;
+    font-size: 2.5em;
+    width: 35px;
+    height: 35px;
+}
+
+.customlink{
+    border: none;
+    background-color: transparent !important;
+    font-weight: 500;
+    color:#5457a1;
+    font-size: 25px;
+}
+.customlink:hover{
+    color: rgb(141, 162, 208);
+    transform: scale(1.1);
+}
+
+
+@media (min-width:576px) {
+
+    .container  {
+        max-width: 540px;
+        margin: 0 calc((100% - 540px)/ 2)
+    }
+}
+
+@media (min-width:768px) {
+    .container {
+        max-width: 720px;
+        margin: 0 calc((100% - 720px)/ 2)
+    }
+}
+
+@media (min-width:992px) {
+    .container  {
+        max-width: 960px;
+        margin: 0 calc((100% - 960px)/ 2)
+    }
+}
+
+@media (min-width:1200px) {
+    .container  {
+        max-width: 1140px;
+        margin: 0 calc((100% - 1140px)/ 2)
+    }
+}
+
+@media (min-width:1400px) {
+    .container  {
+        max-width: 1340px;
+        margin: 0 calc((100% - 1340px)/ 2)
+    }
+}
+
+.card {
+    margin-bottom: 1.875rem;
+    border: none;
+    border-radius: 0;
+}
+
+.card .card {
+    box-shadow: none !important
+}
+
+.card .card-title {
+    font-weight: 500;
+    letter-spacing: .05rem;
+    font-size: 1.12rem
+}
+
+
+.card .card-body[class*=border-bottom-] {
+    border-bottom-width: 2px !important
+}
+
+
+
+
+@media (min-width:992px) {
+    .heading-elements-toggle {
+        display: none
+    }
+}
+
+
+.icon-align {
+    margin-top: .6rem;
+    margin-left: .5rem
+}
+
+.icon-left,
+.icon-right {
+    margin-right: .5rem
+}
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotate(0)
+    }
+
+    to {
+        -webkit-transform: rotate(360deg)
+    }
+}
+
+
+@keyframes spin {
+
+    0%,
+    from {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+
+    100%,
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@media only screen and (max-width:576px) {
+    .line-on-side {
+        border-bottom: none;
+        line-height: 1.25rem
+    }
+}

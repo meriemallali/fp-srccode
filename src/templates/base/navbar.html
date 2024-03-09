@@ -1,0 +1,110 @@
+{% load static %}
+{% load bootstrap5 %}
+{% include './head.html' %}
+
+<head>
+  <link rel="stylesheet" href="{% static 'css/navstyle.css' %}" />
+  <style>
+    #sidebar {
+      height: 100vh;
+      background-color: #5457a1;
+    }
+    #content {
+      height: 100vh;
+      margin-left: 350px; 
+    }
+    .nav-link{
+      color: white;
+      background-color: #5457a1; 
+    }
+    .nav-link.active{
+      background-color: white;
+    }
+  </style>  
+</head>
+<body>
+
+  <div class="wrapper d-flex align-items-stretch" >
+    <nav id="sidebar" class="active nav nav-pills flex-column mb-auto">
+      <div class="custom-menu d-flex flex-column flex-shrink-0 ">
+        <button type="button" id="sidebarCollapse" style="width:20px; height: 20px; border: none; background: none;" >
+          <lord-icon
+                src="https://cdn.lordicon.com/eouimtlu.json"
+                trigger="hover"
+                colors="primary:#5457a1"
+                style="width:40px;height:40px; vertical-align: middle;">
+            </lord-icon>
+        </button>
+      </div>
+      <div class=" p-4" style="height: 100vh;" style="background-color: #8496e0;" id='sidebar1' >
+        <span class="fs-4 fw-bold font-italic " > Ensemblify 
+          <i style="display: inline-block; vertical-align: middle;">
+          <lord-icon
+          src="https://cdn.lordicon.com/hrmtzvrr.json"
+          trigger="loop"
+          stroke="bold"
+          colors="primary:#d1f3fa,secondary:#5457a1"
+          style="width:35px;height:35px"
+        >
+        </lord-icon> </i>
+        </span>
+      <hr>
+        <ul class="list-unstyled components mb-5 pt-3">
+          <li class="nav-item">
+            <a  onClick= "window.location.href='/'" id='home'  class="nav-link active fw-bold" style="background-color: #5457a1;"
+             role="button">
+              <span class="bi bi-layout-text-sidebar-reverse mr-3"></span>
+            Dashboard</a>
+          </li>
+          
+          <li class="nav-item">
+            <a onClick= "window.location.href='/tasks'"  class="nav-link  fw-bold" style="background-color: #5457a1;" role="button"
+            >
+            <span class="bi bi-plus-circle mr-3"  role="button"></span> 
+            Add task</a>
+          </li>
+          <li class="nav-item">
+            <a href='{% url 'direct_chat'  user.id user.username %}' id='livechat' class="nav-link  fw-bold" style="background-color: #5457a1;" role="button">
+              <span class="bi bi-wechat mr-3" role="button"></span> Direct Chat</a>
+          </li>
+          <li class="nav-item">
+            <a  onClick= "window.location.href='/myprojects'" id='projects' class="nav-link  fw-bold" style="background-color: #5457a1;" role="button">
+              <span class="bi bi-files mr-3"></span> My Projects</a>
+          </li>
+        <div class="dropdown mt-4 " style="border-radius: 2%;height:40px;">
+          <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownuser" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false" style="align-items: center;">
+            <img src="{{user_profile.photo.url}}" alt="user profile" width="32" height="32" class="rounded-circle me-2">
+            <strong >{{user.username}} </strong>
+          </a>
+          <ul class="dropdown-menu  shadow" aria-labelledby="dropdownuser" style="width: 222px; color:#5457a1">
+            <li><a class="dropdown-item fw-bold p-3" onClick= "window.location.href='/profile/settings'" style="color: #5457a1;" role="button">
+              <span class="bi bi-gear h5 mr-2" style="color: #5457a1;"></span> 
+              Settings</a></li>
+              {%if user.is_superuser%}
+              {% comment %} If user is a superuser show Rest API & admin site {% endcomment %}
+              <li><a class="dropdown-item fw-bold p-3" onClick= "window.location.href='/api'" style="color: #5457a1;" role="button">
+                <span class="bi bi-app-indicator h5 mr-2" style="color: #5457a1;"></span> 
+                Rest API</a></li>  
+                <li><a class="dropdown-item fw-bold p-3" onClick= "window.location.href='/admin'" style="color: #5457a1;" role="button">
+                  <span class="bi bi-window-sidebar h5 mr-2" style="color: #5457a1;"></span> 
+                  Admin site</a></li>  
+
+              {%endif%}
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item fw-bold p-3"  onClick= "window.location.href='/logout'"style="color: #5457a1;" role="button">
+              <span class="bi bi-box-arrow-left h5 mr-2" style="color: #5457a1;"></span> 
+              Sign Out</a></li>
+          </ul>
+        </div>
+      </ul>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="p-2 p-md-2 pt-5">
+    </div>
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/navbar.js' %}"></script>
+</body>

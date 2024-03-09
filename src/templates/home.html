@@ -1,0 +1,177 @@
+{% load static %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
+{% include './base/head.html' %}
+{% include './base/navbar.html' %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<html lang="en">
+  <head>
+    <title>Home- Ensemblify</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}" />
+  </head>
+  {% block content %}
+  <div class="container-fluid p-4 p-md-5 pt-5 mt-4 grey-bg" >
+    {% comment %} User's personal tasks  {% endcomment %}
+      <div class="row">
+        <div class="col-12 mt-3 mb-1">
+          <button class="customlink" onClick= "window.location.href='/tasks'" role="button">My tasks</button>
+          <p>Overview of your tasks.</p>
+        </div>    
+      </div>
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi bi-exclamation-circle primary  float-left"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h3 class="fw-bolder">{{not_started_tasks}}</h3>
+                    <span> Not started tasks </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                  <i class="bi bi-hourglass-split"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h3 class="fw-bolder">{{in_progress_tasks}}</h3>
+                    <span>In Progress tasks</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi bi-list-check float-left"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h3 class="fw-bolder">{{completed_tasks}}</h3>
+                    <span>Completed tasks</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="media-body text-left">
+                    <h3 class="fw-bolder">{{productivity_rate}} %</h3>
+                    <span>Productivity Rate</span>
+                  </div>
+                  <div class="align-self-center">
+                    <i
+                      class="bi bi-rocket-takeoff-fill  float-right" 
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% comment %} User's projects and tasks {% endcomment %}
+      <div class="row">
+        <div class="col-12 mt-3 mb-1">
+          <button class="customlink" onClick= "window.location.href='/myprojects'">My Projects & Projects tasks </button>
+          <p>Statistics on your project tasks.</p>
+        </div>    
+      </div>
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="media-body text-left">
+                    <h3 class="fw-bolder">{{project_total}}</h3>
+                    <span> Projects you're part of </span>
+                  </div>
+                  <div class="align-self-center">
+                    <i class="bi bi-file-earmark-text float-right"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi bi-x-circle  float-left"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h3 class="fw-bolder">{{p_tasksnotcompleted_total}}</h3>
+                    <span>Not started tasks for projects</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi bi-check2-all  float-left"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h3 class="fw-bolder">{{p_taskscompleted_total}}</h3>
+                    <span>Completed tasks for projects</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+          <div class="card shadow">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="media-body text-left">
+                    <h3 class="fw-bolder">{{completion_rate}} %</h3>
+                    <span>Overall Completetion Rate</span>
+                  </div>
+                  <div class="align-self-center">
+                    <i
+                      class="bi bi-check2-circle float-right" 
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+  {% endblock %}
+</html>

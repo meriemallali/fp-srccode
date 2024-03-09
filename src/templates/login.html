@@ -1,0 +1,57 @@
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% include './base/head.html' %}
+
+<head>
+    <title>Log In </title>
+</head>
+    <body class="bg-gray">
+        <section class="p-5">
+          <div class="container shadow">
+            <div class="row justify-content-center">
+              <div class="col-md-12 col-lg-10">
+                <div class="wrap d-flex">
+                  <div
+                    class="img"
+                  >   
+                  <img id= 'gif' src='static/images/Ensemblify.gif' alt="website logo design">
+                </div>
+                  <div class=" p-4 p-md-5">
+                    <div class="d-flex">
+                      <h5 class="mb-2">Log In to your account</h5>
+                  </div>
+                    <form action="" method="POST" style='
+                    width: 300px;
+                  '>
+                      {% csrf_token %}
+                      {% for message in messages %}
+                      <p class="fw-bold"><span class="fw-normal text-danger">{{message}}</span></p>
+                      {% endfor %}
+                <div class="input-group my-3">
+                  <span class="input-group-prepend" > <div class="input-group-text bg-transparent border-right-0" ><i class="bi bi-person" style="color: #5457a1;"></i> </div> </span>
+                  <input type="text" name="username" class="form-control border-left-0 border"  placeholder="Username" aria-label="username" >
+                </div>
+                <div class="input-group my-3">
+                  <span class="input-group-prepend"><div class="input-group-text bg-transparent border-right-0" ><i class="bi bi-lock" style="color: #5457a1;"></i> </div> </span>
+                  <input name="password" type="password" class="form-control border-left-0 border" placeholder="Password" aria-label="Password" > 
+                </div>
+                <button type="submit" class="btn w-100 my-3 text-light fw-bolder" style="background-color: #5457a1;">Sign In</button>
+                  </form>
+                  <p class="text-decoration-none text-center">Don't have an account?</p>
+                  <hr />
+                  <div class="text-center my-4">
+                   <a href='/signup'> <button  class="btn w-100 my-3 text-light fw-bolder" data-bs-toggle="modal" style="background-color: #5457a1;">Create New Account</button> </a>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/popper.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

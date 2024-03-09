@@ -1,0 +1,65 @@
+{% load static %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
+{% include './base/head.html' %}
+{% include './base/navbar.html' %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<head>
+    <title>Profile- Settings</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  </head>
+
+
+{% block content %}
+<div class="container p-4 p-md-5 pt-3" >
+<div class="card shadow shadow-lg" style="width: 800px;">
+      <div class="card-content">
+        <div class="card-header" style="background-color: #5457a1;">
+          <h5 class="card-title" style="color: white;" >Edit your profile</h5></div>
+        <div class="card-body">
+          <form action="" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="grid gap-3 p-4" style="display: grid; line-height: inherit; color: #666; font-size: 15px;">
+                  <div class="row">
+                      <div class="col">
+                        <label for="firstname">First Name</label>
+                        <input name="first_name" class="form-control" id="firstname" value="{{user_profile.first_name}}"  placeholder="{{user_profile.first_name}}">                    
+                      </div>
+                      <div class="col">
+                        <label for="lastname">Last Name</label>
+                        <input name="last_name"  class="form-control" id="lastname" value="{{user_profile.last_name}}" placeholder="{{user_profile.last_name}}">                    
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                    <label for="status">Status</label>
+                    <textarea class="form-control" id="status" name="bio"  > {{user_profile.bio}}</textarea>
+                    </div>
+                </div>
+                  <div class="row">
+                      <div class="col">
+                        <p>Profile Image</p>
+                          <img id='profileimage' width="250" height="250" src="{{user_profile.photo.url}}" alt=' user profile photo'/>
+                          <br>
+                      </div>
+                      <div class="col">
+                        <input type="file" name="photo" value=" " class="shadow-none bg-gray-100 mt-2"> 
+                      </div>
+                  </div>
+                  <!-- save and cancel buttons -->
+                  <div class="row">
+                    <div class="d-flex flex-row-reverse">
+                        <button class="btn btn-outline-secondary" style="width: 100px;">
+                          <a href="/" class="text-decoration-none text-black" style="width: 100px;">Cancel</a> </button>
+                        <button type="submit" class="mx-2 btn btn-outline-success" style="width: 100px;"><i class="bi bi-save"></i> Save </button>
+                    </div>  
+                  </div>
+              </div>
+          </form>
+        </div>
+  </div>
+</div>
+{% endblock %}

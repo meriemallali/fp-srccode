@@ -1,0 +1,79 @@
+.custom-nav-link {
+    color: #615fbf;
+    font-weight: bold;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+.custom-nav-link:hover {
+    color: rgb(72, 139, 67);
+    background-color: #f0f0f0;
+}
+
+.custom-project-badge {
+    display: flex;
+    background-color: #5457A1;
+    color: #e6f1ff;
+    border-radius: 3px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    font-weight: 800;
+    text-decoration: none #0d172a solid;
+    text-decoration-thickness: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    font-size: medium;
+}
+
+.custom-project-badge:hover {
+    background-color: white;
+    color: #5457A1;
+    border: 1px solid #5457A1;
+}
+
+.mark-task-button {
+    display: flex;
+    background-color: white;
+    color: #5457A1;
+    border: 1px solid #5457A1;
+    border-radius: 3px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none #0d172a solid;
+    text-decoration-thickness: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    font-size: medium;
+    font-weight: 600;
+    transition: transform 0.3s ease-in-out; 
+
+}
+
+.mark-task-button:hover {
+    transform: scale(1.1); 
+    background-color: #5457A1;
+    color: #e6f1ff;
+   
+}
+
+.card-header-task{
+    position: relative;
+    height: 50px;
+} 
+.card-header-task
+.card-header-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 5px;
+    margin-right: 10px;
+  }

@@ -1,0 +1,348 @@
+{% load static %}
+{% load bootstrap5 %}
+{% load crispy_forms_tags %}
+{% load bootstrap_icons %}
+{% include './base/head.html' %}
+{% include './base/navbar.html' %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<head>
+  <title>Ensemblify- My projects</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/myproject_page.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  
+</head>
+
+{% block content %}
+  <div class="container p-4 p-md-5 pt-5 mt-4 ">
+    {% comment %} Show control panel only for users with roles: admin, project manager or lead {% endcomment %}
+    {% if user_profile.user_roles == 'project manager' or user_profile.user_roles == 'admin' or user_profile.user_roles == 'lead' or user.is_superuser %}
+    <div class="top-right-corner-section m-3 shadow rounded">
+        <h4>Control Panel </h4>
+        <button type="button" class="btn button-panel" data-toggle="modal" data-target="#projectModal">Create Project</button>
+        <button type="button" class="btn button-panel" data-toggle="modal" data-target="#teamModal">Create Team</button>
+        <button type="button" class="btn button-panel" data-toggle="modal" data-target="#memberModal">Assign Member</button>
+        <button type="button" class="btn button-panel" data-toggle="modal" data-target="#createTaskModal">Create Task </button>
+        {% comment %} {%if user.is_superuser%} {% endcomment %}
+        {% comment %} If user is a superuser show admin site {% endcomment %}
+        {% comment %} <button type="button" class="btn button-panel" onClick= "window.location.href='/admin'" >Admin site</button> {% endcomment %}
+        {% comment %} {%endif%} {% endcomment %}
+    </div>
+    {% endif %}
+    <div class="container">
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h3 style="display: inline-block;" class="pb-3">
+            My projects
+            <lord-icon src="https://cdn.lordicon.com/jkzgajyr.json"
+            trigger="loop" state="hover" colors="primary:#5457a1" style="width:40px;height:40px; vertical-align: middle;"></lord-icon></h3>
+        {% for project_info in project_data %}
+          <div class="card mb-3 shadow rounded" >
+            <div class="card-header h4" > 
+                <a href="{% url 'project_details' project_info.project.id %}" class="custom-link"
+                role="button" style="display: inline-block; width:65%;">{{ project_info.project.project_name }}</a>
+                <h5 class="team-button mb-1 mr-4" style="display: inline-block;" data-toggle="modal" data-target="#teamlist" 
+                data-list-id="{{ project_info.id }}" 
+                >{{ project_info.team_name }}</h5>
+                {% comment %} dropdown menu visible to only authorized users {% endcomment %}
+                {% comment %} Option to delete projects or edit only for authorized users {% endcomment %}
+            {% if user_profile.user_roles == 'project manager' or user_profile.user_roles == 'admin' or user_profile.user_roles == 'lead' or user.is_superuser %}
+                    <a class="btn" id="dropdownMenuLink" 
+                    style="top: 0; right:0"
+                    type="button"
+                    data-toggle="dropdown"
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false" role='button'>
+                        <i class="bi bi-three-dots-vertical h4"></i>
+                    </a>  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <li><a class="dropdown-item" data-toggle="modal" data-target="#editproject-{{ project_info.project.id }}" role='button'
+                        data-project-id="{{ project_info.id }}"  style="display: inline-block;"  class="btn btn-danger" 
+                        data-bs-placement="right" title="Edit {{project_info.project.project_name}}"
+                        > <i class="bi bi-pen"></i> Edit  
+                      </a></li>
+                      <li>
+                        <form action="{% url 'delete_project' project_info.project.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" style="display: inline-block;" data-bs-toggle="tooltip"
+                              class="dropdown-item btn btn-danger"  data-bs-placement="right" title="Delete {{project_info.project.project_name}}"
+                              > <i class="bi bi-x-lg"></i> Delete </button>
+                        </form> 
+                      </a></li>
+                    </ul>    
+                {% comment %} Modal to edit selected project {% endcomment %}
+                <div class="modal fade" id="editproject-{{ project_info.project.id }}" tabindex="-1" role="dialog" tabindex="-1"  aria-labelledby="projectModalLabel" >
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="projectModalLabel">Edit project </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body" id="teamListContent" >
+                            <form action="{% url 'edit_project' project_info.project.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <label for='project_name' >Project name  </label>
+                                <input type="text" name="project_name" class="fs-6 form-control rounded-2 border border-dark bg-transparent mr-4 mb-4" value="{{project_info.project.project_name}}" required>
+                                <label for='project_description' >Project description  </label>
+                                <input type="text" name="project_description" class="fs-6 form-control rounded-2 border border-dark bg-transparent mr-4 mb-4" value="{{project_info.project.description}}" required>
+                                <button type="submit" style="display: inline-block;"  class="btn button-edit">  Save changes  <i class="bi bi-save"></i></i></button>
+                            </form> 
+                        </div>
+                    </div>
+                    </div>
+                </div> 
+            {%endif%}             
+                </div>
+                  <!-- team list Modal -->
+                <div class="modal fade" id="teamlist" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" >
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="projectModalLabel">Team list for {{project_info.team_name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body" id="modal-body-content" >
+                            {%for member in project_info.team_list %}
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-action mb-1"> {{member.username}}</li>
+                            </ul>
+                            {%empty%}
+                        <h5 class="modal-text" id="projectModalLabel">list empty </h5>
+                        {%endfor%}
+                        </div>
+                        
+                    </div>
+                    </div>
+                </div>
+                <!--end of team list modal --> 
+            <div class="card-body">
+              <div class="card-title list-group-item h6">Description: {{ project_info.project.description }}</div>
+              <div class="card-text">
+              <ul class="list-group">
+                <div class="accordion mb-2" id="accordionFlushExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Team list 
+                        </button>
+                      </h2>
+                      <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            {%for user in project_info.team_list %} 
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">- {{user.username}}</li>
+                            </ul>    
+                            {%empty%}
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item list-group-item-action mb-1"> list empty</li>
+                            </ul>
+                            {%endfor%}
+                        </div>
+                        </div>
+                      </div>
+              </ul>
+            </div>
+                <a href="{% url 'project_details' project_info.project.id %}" class="btn project-details-btn">View Details
+                    <lord-icon  src="https://cdn.lordicon.com/vduvxizq.json"
+                    trigger="loop" state="loop" colors="primary:#fff" 
+                    style="width:20px;height:20px; vertical-align: middle;"></lord-icon>
+                </a>
+            </div>
+            <div class="card-footer text-muted">Project created by : {{ project_info.project.created_by }}</div>
+          </div>
+          {% empty %}
+        
+        {% endfor %}
+      </div>
+        <div class="col-md-6">
+          <h3 style="display: inline-block;" class="pb-3">
+             My tasks
+            <lord-icon  src="https://cdn.lordicon.com/vdjwmfqs.json"
+            trigger="loop" state="hover" colors="primary:#5457a1" 
+            style="width:40px;height:40px; vertical-align: middle;"></lord-icon></h3>
+          {% for task_data in project_tasks %}
+          {%for task in task_data%}
+            <div class="card mb-2" style="border-color: #9ba3ab;">
+                <div class="card-header">
+                    <a class="custom-link h4"
+                    style="display: inline-block; width: 80%;">Task: {{ task.name }} </a>
+                   <a class="project-button mb-1" style="display: inline-block;"
+                   role='button' href="{% url 'project_details' task.project.id %}" >{{ task.project }}</a>
+                </div>
+            <div class="card-body" >
+                <div class="card-title h5" >                     
+                    {% if task.completed %}
+                    <span class="badge badge-success">Task Completed <i class="bi bi-check2"></i></span>
+                    {% else %}
+                    <span class="badge badge-danger">Task Not Completed <i class="bi bi-x"></i></span>
+                    {%endif%}
+                </div>
+                    <ul class="list-group mb-1">
+                    <li class="list-group-item">Description: {{ task.description }}</li>
+                    </ul>
+                    <ul class="list-group mb-1 ">
+                    <li class="list-group-item">Task for project: {{ task.project }} </li></ul>
+            </div>
+            <div class="card-footer text-muted">Assigned by : {{ task.assigned_by }} </div>
+        </div>
+            {% empty %}
+          {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  <!-- Create new project Modal -->
+  <div class="modal fade p-4 mt-2" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document" style="max-width: 800px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectModalLabel">Create New Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <!-- Form for creating a new project -->
+          <form method="post" action="{% url 'create_project' %}">
+            {% csrf_token %}
+            
+            <input type="text" name="project_name" placeholder="Project Name" class= 'mb-2 mr-1 ' style="width: 766px; height: 40px; border: 1px solid #ced4da;"required /> <br>
+            <input type="text" name="description" placeholder="Project Description"class= 'mb-2 mr-1 ' style="width: 766px; height: 80px;border: 1px solid #ced4da;" />
+            <select class="form-select" aria-label="select teams" name="team_id" class= 'mb-4 mr-1 ' style="margin-bottom: 4%;">
+                <option value="" disabled selected>Choose a team</option>
+              {% for team in team_list %}
+                <option value="{{ team.id }}" class= 'mb-4 mr-1 '>{{ team.team_name }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-panel-modal">Create Project</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Modal -->
+  <div class="modal fade" id="teamModal" tabindex="-1" role="dialog" aria-labelledby="teamModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 900px;max-height: 900px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="teamModalLabel">Create New Team</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <!-- Form for creating a new team -->
+          <form method="post" action="{% url 'create_team' %}">
+            {% csrf_token %}
+            <label for="team_name" class="h6">Team name:</label>
+            <input type="text" name="team_name" placeholder="Team Name" id = "team_name" required style="width: 766px; height: 40px; border: 1px solid #ced4da;"/> 
+            <br>
+            <label for="form-check-team" class="h6 mt-2">Choose members:</label>
+            {% for user in users_list %}
+            <div class="form-check mb-2 mt-2" id="form-check-team"> 
+                <input class="form-check-input" type="checkbox" name ='user_ids' value="{{ user.id }}" required id="flexCheckDefault">
+                <label class="form-check-label h6" for="flexCheckDefault">
+                    {{ user.username }}
+                </label>
+              </div>
+          {% endfor %}
+            <button type="submit" class="btn btn-panel-modal">Create Team</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Member Modal -->
+  <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 900px;max-height: 900px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="memberModalLabel">Add New Member</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <!-- Form for adding a new member -->
+          <form method="post" action="{% url 'add_member' %}">
+            {% csrf_token %}
+            <div class="dropdown">
+            <select class="form-select" aria-label="select teams" name="team_id" style="margin-bottom: 2%; width:700px">
+                <option value="" disabled selected>Choose a team</option>
+              {% for team in team_list %}
+                <option value="{{ team.id }}">{{ team.team_name }}</option>
+              {% endfor %}
+            </select>
+            <select class="form-select" aria-label="select teams" name="user_id" style="margin-bottom: 2%; width:700px">
+                <option value="" disabled selected>Select a user</option>
+              {% for user in users_list %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-panel-modal">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- Create new task  Modal -->
+  <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 900px;max-height: 900px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createTaskModalLabel">Add New Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+        
+          <form method="post" action="{% url 'create_ptask' %}">
+            {% csrf_token %}
+            <div class="dropdown">
+            <select class="form-select" aria-label="select teams" name='project_id' style="margin-bottom: 2%; width:700px">
+            <option value="" disabled selected>Choose a project</option>
+            {% for project in projects%}
+                <option  value="{{ project.id }}">{{ project.project_name}}</option>
+            {%endfor%}
+            </select>
+            <input type="text" name="taskp_name" placeholder="Task Name" class= 'mb-2 mr-1 ' style="width: 700px; height: 40px; border: 1px solid #ced4da;"required /> <br>
+            <input type="text" name="taskp_description" placeholder="Task description" class= 'mb-2 mr-1 ' style="width: 700px; height: 40px; border: 1px solid #ced4da;"required /> <br>
+            <input type="text" name="taskp_assigned_by" placeholder="Task description" hidden value={{user_profile.user}} /> <br>
+            <select class="form-select" aria-label="select teams" name="taskp_assigned_to" style="margin-bottom: 2%; width:700px">
+            <option value="" disabled selected>Select a user</option>
+              {% for user in users_list %}
+                <option  value="{{ user.id }}">{{ user.username }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-panel-modal">Create task </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.edit-task-btn').click(function () {
+            event.preventDefault(); // Prevent default behavior
+            var projectid = $(this).closest('.card').find('.card-title').attr('id').split('-')[1];
+            var content = $('#content-' + projectid).text().trim();
+            $('#editproject-' + projectid + ' input[name="new_content"]').val(content);
+        });
+    });
+
+    document.getElementById("editButton").addEventListener("click", function() {
+        var menu = document.querySelector(".edit-menu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+    
+  </script>
+  
+
+  <!-- Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
